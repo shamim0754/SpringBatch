@@ -11,3 +11,5 @@ Spring Batch is a framework for batch processing – execution of a series of jo
    2. ItemProcessor :  process it
    3. ItemWriter :  write it to other resources (csv, xml and database)
 3. tasklet : means doing single task only, like clean up the resources after or before a step is started or completed
+4. JobLauncher : responsible for starting a Job
+5. Repositories : responsible of the storing and updating of metadata information related to Job instance executions and Job contexts
