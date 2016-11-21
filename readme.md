@@ -10,3 +10,4 @@ Spring Batch is a framework for batch processing – execution of a series of jo
 ..* Read :  read data from the resources (csv, xml or database)
 ..* PROCESS :  process it
 ..* WRITE :  write it to other resources (csv, xml and database)
+3. tasklet : means doing single task only, like clean up the resources after or before a step is started or completed
