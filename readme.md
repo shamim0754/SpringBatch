@@ -15,7 +15,7 @@ Spring Batch is a framework for batch processing – execution of a series of jo
 5. Repositories : responsible of the storing and updating of metadata information related to Job instance executions and Job contexts
 
 ### How to start ###
-1. create maven project
+1. create maven java project by following command <br>
 `mvn archetype:generate -DgroupId=com.javaaround -DartifactId=SpringBatch -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false`
 
 add dependency at pom.xml
