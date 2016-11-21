@@ -47,4 +47,10 @@ add dependency at pom.xml
     <artifactId>spring-batch-infrastructure</artifactId>
     <version>${springbatch.version}</version>
 </dependency>
+<dependency>
+  <groupId>junit</groupId>
+  <artifactId>junit</artifactId>
+  <version>${junit.version}</version>
+  <scope>test</scope>
+</dependency>
 ```
