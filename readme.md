@@ -107,7 +107,7 @@ public class Domain {
 }
 ```
 
-create application-context.xml at resources/confiq where job launcher with job respository info
+create `application-context.xml` at resources/confiq where job launcher with job respository info
 ```xml
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -133,7 +133,7 @@ create application-context.xml at resources/confiq where job launcher with job r
 </beans>
 ```
 
-create batch-jobs.xml at resources/jobs where where define each batch
+create `batch-jobs.xml` at resources/jobs where where define each batch
 
 ```xml
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -205,4 +205,78 @@ create batch-jobs.xml at resources/jobs where where define each batch
 
   </bean>
 </beans>  
+```
+
+create App.java
+```java
+package com.javaaround;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+    public static void main( String[] args )
+    {
+        String[] springConfig  =
+    {
+      "spring/jobs/batch-jobs.xml"
+    };
+
+    ApplicationContext context =
+      new ClassPathXmlApplicationContext(springConfig);
+
+    JobLauncher jobLauncher = (JobLauncher) context.getBean("jobLauncher");
+    Job job = (Job) context.getBean("helloWorldJob");
+    try {
+
+    JobExecution execution = jobLauncher.run(job, new JobParameters());
+    System.out.println("Exit Status : " + execution.getStatus());
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    }
+}
+
+```
+
+create AppTest.java
+```java
+package com.javaaround;
+
+import org.junit.Test;
+
+/**
+ * Unit test for simple App.
+ */
+public class AppTest {
+   @Test
+   public void AppTest( ){
+        App.main(null);
+   }
+}
+
+
+```
+
+### Run App ###
+`mvn clean package`
+
+### Output file ###
+domain.all.csv
+```csv
+1,facebook.com
+2,yahoo.com
+3,google.com
+200,mkyong.com
+300,stackoverflow.com
+400,oracle.com
+
 ```
