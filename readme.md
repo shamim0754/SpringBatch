@@ -281,7 +281,7 @@ domain.all.csv
 
 ```
 
-if we run again we get error file already exits.for that we create tasklet before execute step
+if we run again we get error file already exits.for that we create tasklet that delete output file before execute step <br/>
 update at batch-jobs.xml with `next` attribute
 
 ```xml
