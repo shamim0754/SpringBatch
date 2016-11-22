@@ -54,3 +54,17 @@ add dependency at pom.xml
   <scope>test</scope>
 </dependency>
 ```
+
+create domain-1-3.csv
+```csv
+1,facebook.com
+2,yahoo.com
+3,google.com
+```
+
+create domain-2-3.csv
+```csv
+1,facebook.com
+2,yahoo.com
+3,google.com
+```

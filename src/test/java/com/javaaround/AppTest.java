@@ -9,7 +9,6 @@ public class AppTest {
    @Test
    public void AppTest( ){
         App.main(null);
-    }
-   
+   }
 }
 
