@@ -9,15 +9,21 @@
 	">
 	<import resource="../config/application-context.xml" />
 	<bean id="domain" class="com.javaaround.Domain" />
-	
+
+	<bean id="fileDeletingTasklet" class="com.javaaround.tasklet.FileDeletingTasklet" >
+		<property name="directory" value="file:outputs/" />
+	</bean>
+
 	<job id="helloWorldJob" xmlns="http://www.springframework.org/schema/batch">
+		<step id="deleteDir"  next="step1">
+	    	<tasklet ref="fileDeletingTasklet" />
+		</step>
 		<step id="step1">
 			<tasklet>
 				<chunk reader="multiResourceReader" writer="flatFileItemWriter"
 					commit-interval="1" />
 			</tasklet>
 		</step>
-		
 	</job>
 
 	<bean id="multiResourceReader"

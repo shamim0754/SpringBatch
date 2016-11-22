@@ -15,16 +15,15 @@
 	</bean>
 
 	<job id="helloWorldJob" xmlns="http://www.springframework.org/schema/batch">
-		<step id="step1" next="deleteDir">
+		<step id="deleteDir"  next="step1">
+	    	<tasklet ref="fileDeletingTasklet" />
+		</step>
+		<step id="step1">
 			<tasklet>
 				<chunk reader="multiResourceReader" writer="flatFileItemWriter"
 					commit-interval="1" />
 			</tasklet>
-			<step id="deleteDir">
-		    	<tasklet ref="fileDeletingTasklet" />
-			</step>
 		</step>
-		
 	</job>
 
 	<bean id="multiResourceReader"

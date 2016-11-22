@@ -22,7 +22,7 @@ Spring Batch is a framework for batch processing – execution of a series of jo
 </job>
 ```
 
-3. tasklet : means doing single task only, like clean up the resources after or before a step is started or completed
+3. tasklet : means doing single task only(no input/output,only process), like clean up the resources after or before a step is started or completed
 4. JobLauncher : responsible for starting a Job
 5. Repositories : responsible of the storing and updating of metadata information related to Job instance executions and Job contexts
 
@@ -280,3 +280,74 @@ domain.all.csv
 400,oracle.com
 
 ```
+
+if we run again we get error file already exits.for that we create tasklet before execute step
+update at batch-jobs.xml with `next` attribute
+
+```xml
+<step id="deleteDir"  next="step1">
+    <tasklet ref="fileDeletingTasklet" />
+</step>
+
+<bean id="fileDeletingTasklet" class="com.javaaround.tasklet.FileDeletingTasklet" >
+    <property name="directory" value="file:outputs/" />
+  </bean>
+```
+
+create FileDeletingTasklet.java
+```java
+package com.javaaround.tasklet;
+
+import java.io.File;
+
+import org.springframework.batch.core.StepContribution;
+import org.springframework.batch.core.UnexpectedJobExecutionException;
+import org.springframework.batch.core.scope.context.ChunkContext;
+import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.core.io.Resource;
+import org.springframework.util.Assert;
+
+public class FileDeletingTasklet implements Tasklet, InitializingBean {
+
+  private Resource directory;
+
+  @Override
+  public void afterPropertiesSet() throws Exception {
+    Assert.notNull(directory, "directory must be set");
+  }
+
+  @Override
+  public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+
+    File dir = directory.getFile();
+    Assert.state(dir.isDirectory());
+
+    File[] files = dir.listFiles();
+    for (int i = 0; i < files.length; i++) {
+      boolean deleted = files[i].delete();
+      if (!deleted) {
+        throw new UnexpectedJobExecutionException("Could not delete file " + files[i].getPath());
+      } else {
+        System.out.println(files[i].getPath() + " is deleted!");
+      }
+    }
+    return RepeatStatus.FINISHED;
+
+  }
+
+  public Resource getDirectory() {
+    return directory;
+  }
+
+  public void setDirectory(Resource directory) {
+    this.directory = directory;
+  }
+
+}
+```
+
+### Run App ###
+`mvn clean package`
+this time file already exists error gone!! because tasklet delete it first then step execute
