@@ -18,11 +18,13 @@
         <artifactId>spring-core</artifactId>
         <version>${springframework.version}</version>
     </dependency>
+    <!--
     <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-oxm</artifactId>
         <version>${springframework.version}</version>
     </dependency>
+  -->
     <dependency>
         <groupId>org.springframework.batch</groupId>
         <artifactId>spring-batch-core</artifactId>
