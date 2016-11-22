@@ -54,8 +54,9 @@ add dependency at pom.xml
   <scope>test</scope>
 </dependency>
 ```
+### Input File ###
 
-create domain-1-3.csv
+create inputs file [domain-1-3.csv]
 ```csv
 1,facebook.com
 2,yahoo.com
@@ -67,4 +68,34 @@ create domain-2-3.csv
 1,facebook.com
 2,yahoo.com
 3,google.com
+```
+
+### Model of Input data ###
+
+create Domain.java
+```java
+package com.javaaround;
+
+public class Domain {
+
+  int id;
+  String domain;
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public String getDomain() {
+    return domain;
+  }
+
+  public void setDomain(String domain) {
+    this.domain = domain;
+  }
+
+}
 ```
