@@ -211,6 +211,62 @@ create `batch-jobs.xml` at resources/jobs where where define each batch
 1. using CommandLineJobRunner
 
   * by command prompt
+  copy dependency jar first otherwise we can't execute
+  ```xml
+  <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-dependency-plugin</artifactId>
+      <version>2.5.1</version>
+      <executions>
+        <execution>
+        <id>copy-dependencies</id>
+        <phase>package</phase>
+        <goals>
+          <goal>copy-dependencies</goal>
+        </goals>
+        <configuration>
+          <outputDirectory>
+            ${project.build.directory}/dependency-jars/
+          </outputDirectory>
+        </configuration>
+        </execution>
+      </executions>
+    </plugin>
+  ```
+
+  write below command project root directory 
+
+  `java -cp "target/dependency-jars/*;target/springbatch.jar" org.springframework.batch.core.launch.support.CommandLineJobRunner spring/jobs/batch-jobs.xml helloWorldJob`
+
+  above command can be done by following maven plugins
+
+  ```xml
+  <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>exec-maven-plugin</artifactId>
+      <version>1.4.0</version>
+      <executions>
+          <execution>
+            <id>my-execution</id>
+            <!-- if skip phase: none -->
+            <phase>package</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+      <configuration>
+         <mainClass>org.springframework.batch.core.launch.support.CommandLineJobRunner</mainClass>
+          <arguments>
+              <!-- job configuration file -->
+              <argument>spring/jobs/batch-jobs.xml</argument>
+              <!-- job name -->
+              <argument>helloWorldJob</argument>
+          </arguments>
+      </configuration>
+    </plugin>
+  ```
+
   * by programming way 
   create App.java
 
