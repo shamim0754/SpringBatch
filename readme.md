@@ -206,6 +206,9 @@ create `batch-jobs.xml` at resources/jobs where where define each batch
   </bean>
 </beans>  
 ```
+### Package App ###
+`mvn clean package`
+
 ### How to run ###
 
 1. using CommandLineJobRunner class
