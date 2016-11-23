@@ -363,6 +363,7 @@ update xmlns jdbc at application-context.xml
     http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
    ">
 ```
+
 add DB info at application-context.xml
 
 ```xml
@@ -394,5 +395,25 @@ add DB info at application-context.xml
     <property name="dataSource" ref="dataSource" />
     <property name="transactionManager" ref="transactionManager" />
     <property name="databaseType" value="mysql" />
+  </bean>
+```
+
+add database writer ad batch-jobs.xml
+```xml
+<bean id="mysqlItemWriter"
+  class="org.springframework.batch.item.database.JdbcBatchItemWriter">
+  <property name="dataSource" ref="dataSource" />
+  <property name="sql">
+    <value>
+            <![CDATA[
+              insert into domain(id,name) values (:id, :domain)
+            ]]>
+    </value>
+  </property>
+  <!-- It will take care matching between object property and sql name parameter -->
+  <property name="itemSqlParameterSourceProvider">
+    <bean
+    class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
+  </property>
   </bean>
 ```
