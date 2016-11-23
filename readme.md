@@ -351,3 +351,48 @@ public class FileDeletingTasklet implements Tasklet, InitializingBean {
 ### Run App ###
 `mvn clean package` <br/>
 this time file already exists error gone!! because tasklet delete it first then step execute
+
+### Write Into DB ###
+update xmlns jdbc at application-context.xml
+
+```xml
+<beans 
+  xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+  xsi:schemaLocation="
+    http://www.springframework.org/schema/jdbc
+    http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+   ">
+```
+add DB info at application-context.xml
+
+```xml
+<!-- connect to database -->
+    <bean id="dataSource"
+    class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+    <property name="url" value="jdbc:mysql://localhost:3306/test" />
+    <property name="username" value="root" />
+    <property name="password" value="" />
+    </bean>
+   <!-- create job-meta tables automatically -->
+    <jdbc:initialize-database data-source="dataSource">
+    <jdbc:script location="org/springframework/batch/core/schema-drop-mysql.sql" />
+    <jdbc:script location="org/springframework/batch/core/schema-mysql.sql" />
+    </jdbc:initialize-database>
+  <!-- stored job-meta in memory -->
+
+  <!-- <bean id="jobRepository"
+    class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
+    <property name="transactionManager" ref="transactionManager" />
+  </bean>
+   -->
+
+   <!-- stored job-meta in database -->
+   
+  <bean id="jobRepository"
+    class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <property name="transactionManager" ref="transactionManager" />
+    <property name="databaseType" value="mysql" />
+  </bean>
+```

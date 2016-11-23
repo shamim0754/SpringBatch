@@ -20,7 +20,7 @@
 		</step>
 		<step id="step1">
 			<tasklet>
-				<chunk reader="multiResourceReader" writer="flatFileItemWriter"
+				<chunk reader="multiResourceReader" writer="mysqlItemWriter"
 					commit-interval="1" />
 			</tasklet>
 		</step>
@@ -54,7 +54,7 @@
 
 	</bean>
 
-	<bean id="flatFileItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter">
+	<!-- <bean id="flatFileItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter">
 
 		<property name="resource" value="file:outputs/domain.all.csv" />
 		<property name="appendAllowed" value="false" />
@@ -71,5 +71,22 @@
 			</bean>
 		</property>
 
-	</bean>
+	</bean> -->
+	<bean id="mysqlItemWriter"
+	class="org.springframework.batch.item.database.JdbcBatchItemWriter">
+	<property name="dataSource" ref="dataSource" />
+	<property name="sql">
+	  <value>
+            <![CDATA[
+            	insert into domain(id,name) values (:id, :domain)
+            ]]>
+	  </value>
+	</property>
+	<!-- It will take care matching between object property and sql name parameter -->
+	<property name="itemSqlParameterSourceProvider">
+		<bean
+		class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
+	</property>
+  </bean>
+
 </beans>	
