@@ -486,3 +486,59 @@ add xml writer at batch-jobs.xml
 ### Run App ###
 `mvn clean package` <br/>
 ![Image of spring batch](images/1.png)
+
+### XML Reader ###
+
+```xml
+<bean id="xmlItemReader" class="org.springframework.batch.item.xml.StaxEventItemReader">
+  <property name="fragmentRootElementName" value="domain" />
+      <property name="resource" value="file:outputs/domain.xml" />
+      <property name="unmarshaller">
+          <bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+              <property name="classesToBeBound">
+                  <list>
+                      <value>com.javaaround.Domain</value>
+                  </list>
+              </property>
+          </bean>
+
+      </property>
+
+  </bean>
+```
+
+### DB Reader ###
+
+```xml
+<bean id="itemReader"
+  class="org.springframework.batch.item.database.JdbcCursorItemReader"
+  scope="step">
+  <property name="dataSource" ref="dataSource" />
+  <property name="sql"
+    value="select id, name from domain" />
+  <property name="rowMapper">
+    <bean class="com.javaaround.rowmapper.DomainRowMapper" />
+  </property>
+</bean>
+```
+create DomainRowMapper.java
+
+```java
+package com.javaaround.rowmapper;
+import com.javaaround.Domain;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
+
+public class DomainRowMapper implements RowMapper<Domain> {
+
+  @Override
+  public Domain mapRow(ResultSet rs, int rowNum) throws SQLException {
+    Domain domain = new Domain();
+    domain.setId(rs.getInt("id"));
+    domain.setDomain(rs.getString("name"));
+    return domain;
+  }
+
+}
+```

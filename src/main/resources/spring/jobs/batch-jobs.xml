@@ -18,9 +18,15 @@
 		<step id="deleteDir"  next="step1">
 	    	<tasklet ref="fileDeletingTasklet" />
 		</step>
-		<step id="step1">
+		<step id="step1" next="step2">
 			<tasklet>
 				<chunk reader="multiResourceReader" writer="xmlItemWriter"
+					commit-interval="1" />
+			</tasklet>
+		</step>
+		<step id="step2">
+			<tasklet>
+				<chunk reader="itemReader" writer="flatFileItemWriter"
 					commit-interval="1" />
 			</tasklet>
 		</step>
@@ -54,9 +60,9 @@
 
 	</bean>
 
-	<!-- <bean id="flatFileItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter">
+	 <bean id="flatFileItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter">
 
-		<property name="resource" value="file:outputs/domain.all.csv" />
+		<property name="resource" value="file:inputs/domain.all.csv" />
 		<property name="appendAllowed" value="false" />
 		<property name="lineAggregator">
 			<bean
@@ -71,7 +77,7 @@
 			</bean>
 		</property>
 
-	</bean> -->
+	</bean>
 	<bean id="mysqlItemWriter"
 	class="org.springframework.batch.item.database.JdbcBatchItemWriter">
 	<property name="dataSource" ref="dataSource" />
@@ -109,5 +115,29 @@
         </property>
  
     </bean>
-
+    <bean id="xmlItemReader" class="org.springframework.batch.item.xml.StaxEventItemReader">
+ 		<property name="fragmentRootElementName" value="domain" />
+        <property name="resource" value="file:outputs/domain.xml" />
+        <property name="unmarshaller">
+            <bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+                <property name="classesToBeBound">
+                    <list>
+                        <value>com.javaaround.Domain</value>
+                    </list>
+                </property>
+            </bean>
+ 
+        </property>
+ 
+    </bean>
+    <bean id="itemReader"
+		class="org.springframework.batch.item.database.JdbcCursorItemReader"
+		scope="step">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql"
+			value="select id, name from domain" />
+		<property name="rowMapper">
+			<bean class="com.javaaround.rowmapper.DomainRowMapper" />
+		</property>
+  </bean>
 </beans>	
