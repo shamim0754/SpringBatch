@@ -420,6 +420,7 @@ add database writer at batch-jobs.xml
 
 ### Run App ###
 `mvn clean package` <br/>
+![Image of spring batch](images/2.png)
 
 ### Write Into DB ###
 
