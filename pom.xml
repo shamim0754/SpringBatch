@@ -82,7 +82,7 @@
             <execution>
               <id>my-execution</id>
               <!-- if skip phase: none -->
-              <phase>none</phase>
+              <phase>package</phase>
               <goals>
                 <goal>java</goal>
               </goals>

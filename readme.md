@@ -209,8 +209,9 @@ create `batch-jobs.xml` at resources/jobs where where define each batch
 ### How to run ###
 
 1. using CommandLineJobRunner
-  i. by command promped
-  ii. by programming way 
+
+  * by command promped
+  * by programming way 
 2. using JobLauncher
 
 ### using JobLauncher ###

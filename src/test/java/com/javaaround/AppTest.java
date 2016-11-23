@@ -8,7 +8,7 @@ import org.junit.Ignore;
  */
 public class AppTest {
    @Test
-   //@Ignore
+   @Ignore
    public void AppTest( ){
         App.main(null);
    }
