@@ -270,7 +270,7 @@ create `batch-jobs.xml` at resources/jobs where where define each batch
   ```
 
   * by programming way 
-  
+
   create App.java
 
   ```java
@@ -520,7 +520,7 @@ add database writer at batch-jobs.xml
 `mvn clean package` <br/>
 ![Image of spring batch](images/2.png)
 
-### Write Into DB ###
+### Write Into XML ###
 
 add dependency at pom.xml
 ```xml
@@ -563,22 +563,19 @@ public class Domain {
 
 add xml writer at batch-jobs.xml
 ```xml
-<bean id="mysqlItemWriter"
-  class="org.springframework.batch.item.database.JdbcBatchItemWriter">
-  <property name="dataSource" ref="dataSource" />
-  <property name="sql">
-    <value>
-            <![CDATA[
-              insert into domain(id,name) values (:id, :domain)
-            ]]>
-    </value>
-  </property>
-  <!-- It will take care matching between object property and sql name parameter -->
-  <property name="itemSqlParameterSourceProvider">
-    <bean
-    class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
-  </property>
-  </bean>
+ <bean id="xmlItemWriter" class="org.springframework.batch.item.xml.StaxEventItemWriter">
+    <property name="resource" value="file:outputs/domain.xml" />
+    <property name="rootTagName" value="domains" />
+    <property name="marshaller">
+        <bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+            <property name="classesToBeBound">
+                <list>
+                    <value>com.javaaround.Domain</value>
+                </list>
+            </property>
+        </bean>
+    </property>
+</bean>
 ```
 
 ### Run App ###
