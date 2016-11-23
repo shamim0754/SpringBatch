@@ -20,7 +20,7 @@
 		</step>
 		<step id="step1">
 			<tasklet>
-				<chunk reader="multiResourceReader" writer="mysqlItemWriter"
+				<chunk reader="multiResourceReader" writer="xmlItemWriter"
 					commit-interval="1" />
 			</tasklet>
 		</step>
@@ -88,5 +88,26 @@
 		class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
 	</property>
   </bean>
+
+  <!-- XML ItemWriter which writes the data in XML format -->
+    <bean id="xmlItemWriter" class="org.springframework.batch.item.xml.StaxEventItemWriter">
+ 
+        <property name="resource" value="file:outputs/domain.xml" />
+ 
+        <property name="rootTagName" value="domains" />
+ 
+        <property name="marshaller">
+ 
+            <bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+                <property name="classesToBeBound">
+                    <list>
+                        <value>com.javaaround.Domain</value>
+                    </list>
+                </property>
+            </bean>
+ 
+        </property>
+ 
+    </bean>
 
 </beans>	

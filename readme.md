@@ -398,7 +398,7 @@ add DB info at application-context.xml
   </bean>
 ```
 
-add database writer ad batch-jobs.xml
+add database writer at batch-jobs.xml
 ```xml
 <bean id="mysqlItemWriter"
   class="org.springframework.batch.item.database.JdbcBatchItemWriter">
@@ -417,3 +417,71 @@ add database writer ad batch-jobs.xml
   </property>
   </bean>
 ```
+
+### Run App ###
+`mvn clean package` <br/>
+
+### Write Into DB ###
+
+add dependency at pom.xml
+```xml
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-oxm</artifactId>
+    <version>${springframework.version}</version>
+</dependency>
+```
+update Domain.java
+```java
+package com.javaaround;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class Domain {
+
+  int id;
+  String domain;
+  @XmlElement
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+  @XmlElement(name="name")
+  public String getDomain() {
+    return domain;
+  }
+
+  public void setDomain(String domain) {
+    this.domain = domain;
+  }
+
+}
+```
+
+add xml writer at batch-jobs.xml
+```xml
+<bean id="mysqlItemWriter"
+  class="org.springframework.batch.item.database.JdbcBatchItemWriter">
+  <property name="dataSource" ref="dataSource" />
+  <property name="sql">
+    <value>
+            <![CDATA[
+              insert into domain(id,name) values (:id, :domain)
+            ]]>
+    </value>
+  </property>
+  <!-- It will take care matching between object property and sql name parameter -->
+  <property name="itemSqlParameterSourceProvider">
+    <bean
+    class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
+  </property>
+  </bean>
+```
+
+### Run App ###
+`mvn clean package` <br/>
+![Image of spring batch](images/1.png)
