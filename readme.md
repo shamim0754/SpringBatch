@@ -208,10 +208,12 @@ create `batch-jobs.xml` at resources/jobs where where define each batch
 ```
 ### How to run ###
 
-1. using CommandLineJobRunner
+1. using CommandLineJobRunner class
 
   * by command prompt
-  copy dependency jar first otherwise we can't execute
+
+  copy dependency jar first otherwise we can't get CommandLineJobRunner class
+
   ```xml
   <plugin>
       <groupId>org.apache.maven.plugins</groupId>
@@ -300,7 +302,7 @@ create `batch-jobs.xml` at resources/jobs where where define each batch
   }
 
   ```
-2. using JobLauncher
+2. using JobLauncher class
 
     update App.java
     ```java
