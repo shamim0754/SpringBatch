@@ -562,7 +562,9 @@ public class Domain {
 }
 ```
 
-here we LocalDate type so to generate xml need an xml adapter class
+In JAXB2, complex data type like Date and BigDecimal, will not map to the field automatically, even it’s annotated.
+
+To make JAXB2 supports Date conversion, you need to create a custom Adapter to handle the Date format manually, then attaches the adapter via @XmlJavaTypeAdapter
 
 create LocalDateAdapter.java
 ```java
@@ -695,9 +697,7 @@ public class Domain {
 
 }
 ```
-In JAXB2, those “complex” data type like Date and BigDecimal, will not map to the field automatically, even it’s annotated.
 
-To make JAXB2 supports Date conversion, you need to create a custom Adapter to handle the Date format manually, then attaches the adapter via @XmlJavaTypeAdapter
 
 add xml writer at batch-jobs.xml
 ```xml
