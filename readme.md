@@ -820,7 +820,7 @@ JobExecution execution = jobLauncher.run(job, jobParameters);
 ### Custom processor ###
 Use case
 1. Input type transform to other type[like User -> employee]
-  - 
+   
   ```java
   //I == input type
   // O == Output type
