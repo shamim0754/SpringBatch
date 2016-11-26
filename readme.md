@@ -580,7 +580,9 @@ public class LocalDateAdapter extends XmlAdapter<String, LocalDate>{
     }
   @Override
     public String marshal(LocalDate v) throws Exception {
-        return v.toString();  //v.toString() retrun yyyy-MM-dd
+        //default formate yyyy-MM-dd.if need other use
+        // v.toString("dd/MM/yyyy")
+        return v.toString();  
     }
  
 }
