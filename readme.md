@@ -7,8 +7,8 @@ Spring Batch is a framework for batch processing – execution of a series of jo
 ### Concept ###
 1. Job : represents sequences of actions or commands that have to be executed within the batch application
 2. Step :  A job consists of many steps and each step consists of a READ-PROCESS-WRITE(chunk) task or single operation task (tasklet)
-   1. ItemReader :  read data from the resources (csv, xml or database)
-   2. ItemProcessor :  provides a hook to apply business logic
+   1. ItemReader :  providing the data from the resources (csv, xml or database) or custom.
+   2. ItemProcessor :  provides a hook to apply business logic on each item
    3. ItemWriter :  write it to other resources (csv, xml and database)
 
 ```xml
@@ -816,3 +816,8 @@ JobParameters jobParameters = new JobParametersBuilder()
 JobExecution execution = jobLauncher.run(job, jobParameters);
 
 ```
+
+### Custom processor ###
+Use case
+1. Input type transform to other type[like User -> employee]
+2. Filter out records 
