@@ -14,16 +14,16 @@ public class App
 {
     public static void main( String[] args )
     {
-    	try {
+    	/*try {
 
 		CommandLineJobRunner.main(new String[] {
          	"spring/jobs/batch-jobs.xml","helloWorldJob"
          });
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
          
-        /*String[] springConfig  =
+        String[] springConfig  =
 		{
 			"spring/jobs/batch-jobs.xml"
 		};
@@ -40,6 +40,6 @@ public class App
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		}*/
+		}
     }
 }

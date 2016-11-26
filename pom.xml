@@ -51,6 +51,11 @@
         <version>${junit.version}</version>
         <scope>test</scope>
     </dependency>
+    <dependency>
+        <groupId>joda-time</groupId>
+        <artifactId>joda-time</artifactId>
+        <version>2.3</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>springbatch</finalName>
@@ -82,7 +87,7 @@
             <execution>
               <id>my-execution</id>
               <!-- if skip phase: none -->
-              <phase>package</phase>
+              <phase>none</phase>
               <goals>
                 <goal>java</goal>
               </goals>

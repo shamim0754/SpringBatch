@@ -453,6 +453,135 @@ public class FileDeletingTasklet implements Tasklet, InitializingBean {
 `mvn clean package` <br/>
 this time file already exists error gone!! because tasklet delete it first then step execute
 
+### Complex type(Date) ###
+
+update domain-1-3.csv
+```csv
+1,facebook.com,12/03/2016
+2,yahoo.com,13/03/2016
+3,google.com,14/03/2016
+```
+
+update domain-2-3.csv
+```csv
+200,mkyong.com,13/03/2016
+300,stackoverflow.com,13/03/2016
+400,oracle.com,13/03/2016
+```
+here we want work complex type instead primitive type then we need `fieldMapper`
+
+create DomainFieldSetMapper.java
+
+```java
+package com.javaaround.fieldmapper;
+
+import org.joda.time.LocalDate;
+import org.springframework.batch.item.file.mapping.FieldSetMapper;
+import org.springframework.batch.item.file.transform.FieldSet;
+import org.springframework.validation.BindException;
+ 
+import com.javaaround.Domain;
+ 
+public class DomainFieldSetMapper implements FieldSetMapper<Domain>{
+ 
+    @Override
+    public Domain mapFieldSet(FieldSet fieldSet) throws BindException {
+        Domain domain = new Domain();
+        domain.setId(fieldSet.readInt(0));
+        domain.setDomain(fieldSet.readString(1));
+        domain.setCreatedDate(new LocalDate(fieldSet.readDate(2,"dd/MM/yyyy")));
+        
+        return domain;
+    }
+ 
+}
+```
+
+add dependency at pom.xml
+```xml
+ <dependency>
+    <groupId>joda-time</groupId>
+    <artifactId>joda-time</artifactId>
+    <version>2.3</version>
+</dependency>
+```
+update batch-jobs.xml
+```xml
+<!-- <bean
+  class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+  <property name="prototypeBeanName" value="domain" />
+</bean> -->
+ <bean class="com.javaaround.fieldmapper.DomainFieldSetMapper" />
+```
+
+update Domain.java
+```java
+package com.javaaround;
+import com.javaaround.xmladapter.LocalDateAdapter;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import org.joda.time.LocalDate;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+@XmlRootElement
+public class Domain {
+
+  private int id;
+  private String domain;
+  private LocalDate createdDate;
+
+  @XmlElement
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  @XmlElement(name="create")
+  @XmlJavaTypeAdapter(type = LocalDate.class, value=LocalDateAdapter.class)
+  public LocalDate getCreatedDate() {
+    return createdDate;
+  }
+
+  public void setCreatedDate(LocalDate createdDate) {
+    this.createdDate = createdDate;
+  }
+  @XmlElement(name="name")
+  public String getDomain() {
+    return domain;
+  }
+
+  public void setDomain(String domain) {
+    this.domain = domain;
+  }
+
+}
+```
+
+here we LocalDate type so to generate xml need an xml adapter class
+
+create LocalDateAdapter.java
+```java
+package com.javaaround.xmladapter;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+ 
+import org.joda.time.LocalDate;
+ 
+public class LocalDateAdapter extends XmlAdapter<String, LocalDate>{
+  @Override
+    public LocalDate unmarshal(String v) throws Exception {
+        return new LocalDate(v);
+    }
+  @Override
+    public String marshal(LocalDate v) throws Exception {
+        return v.toString();  //v.toString() retrun yyyy-MM-dd
+    }
+ 
+}
+```
+
 ### Write Into DB ###
 update xmlns jdbc at application-context.xml
 
@@ -533,6 +662,7 @@ add dependency at pom.xml
     <version>${springframework.version}</version>
 </dependency>
 ```
+
 update Domain.java
 ```java
 package com.javaaround;
@@ -563,6 +693,9 @@ public class Domain {
 
 }
 ```
+In JAXB2, those “complex” data type like Date and BigDecimal, will not map to the field automatically, even it’s annotated.
+
+To make JAXB2 supports Date conversion, you need to create a custom Adapter to handle the Date format manually, then attaches the adapter via @XmlJavaTypeAdapter
 
 add xml writer at batch-jobs.xml
 ```xml
