@@ -20,7 +20,7 @@
 		</step>
 		<step id="step1">
 			<tasklet>
-				<chunk reader="multiResourceReader" writer="xmlItemWriter"
+				<chunk reader="multiResourceReader" processor="domainItemProcessor" writer="xmlItemWriter"
 					commit-interval="1" />
 			</tasklet>
 		</step>
@@ -31,7 +31,8 @@
 			</tasklet>
 		</step> -->
 	</job>
-
+	<!-- Optional ItemProcessor to perform business logic/filtering on the input records -->
+    <bean id="domainItemProcessor" class="com.javaaround.processor.DomainItemProcessor" />
 	<bean id="multiResourceReader"
 		class=" org.springframework.batch.item.file.MultiResourceItemReader" scope="step">
 		<property name="resources" value="#{jobParameters['filePath']}" />

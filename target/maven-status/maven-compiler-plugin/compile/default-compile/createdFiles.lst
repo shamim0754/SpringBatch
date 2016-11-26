@@ -1,5 +1,6 @@
 com\javaaround\tasklet\FileDeletingTasklet.class
 com\javaaround\App.class
+com\javaaround\processor\DomainItemProcessor.class
 com\javaaround\rowmapper\DomainRowMapper.class
 com\javaaround\fieldmapper\DomainFieldSetMapper.class
 com\javaaround\xmladapter\LocalDateAdapter.class

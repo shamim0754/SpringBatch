@@ -832,3 +832,41 @@ Use case
   ```
 
 2. Filter out records thats should not write 
+
+create DomainItemProcessor.java
+
+```java
+package com.javaaround.processor;
+
+import org.springframework.batch.item.ItemProcessor;
+import com.javaaround.Domain;
+ 
+public class DomainItemProcessor implements ItemProcessor<Domain, Domain>{
+ 
+    @Override
+    public Domain process(Domain domain) throws Exception {
+      
+        /*
+         * Only return results which are equal or more than 60%
+         *
+         */
+        if(domain.getId() > 3){
+            return null;
+        }
+ 
+        return domain;
+    }
+ 
+}
+```
+
+update batch-jobs.xml
+
+```xml
+<chunk reader="multiResourceReader" processor="domainItemProcessor" writer="xmlItemWriter"
+          commit-interval="1" />
+<bean id="domainItemProcessor" class="com.javaaround.processor.DomainItemProcessor" />
+```
+
+### Run App ###
+`mvn clean package` <br/>
