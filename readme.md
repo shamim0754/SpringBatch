@@ -211,7 +211,7 @@ create `batch-jobs.xml` at resources/jobs where where define each batch
 
 ### How to run ###
 
-1. using CommandLineJobRunner class
+1. using `CommandLineJobRunner` class
 
   * by command prompt
 
@@ -238,7 +238,7 @@ create `batch-jobs.xml` at resources/jobs where where define each batch
       </executions>
     </plugin>
   ```
-  
+
   `java CommandLineJobRunner config file job_name job_paramter'
 
   write below command project root directory 
@@ -308,7 +308,7 @@ create `batch-jobs.xml` at resources/jobs where where define each batch
   }
 
   ```
-2. using JobLauncher class
+2. using `JobLauncher` class
 
     update App.java
     ```java
