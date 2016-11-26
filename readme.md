@@ -238,6 +238,8 @@ create `batch-jobs.xml` at resources/jobs where where define each batch
       </executions>
     </plugin>
   ```
+  
+  `java CommandLineJobRunner config file job_name job_paramter'
 
   write below command project root directory 
 
