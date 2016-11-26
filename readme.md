@@ -818,7 +818,8 @@ JobExecution execution = jobLauncher.run(job, jobParameters);
 ```
 
 ### Custom processor ###
-Use case
+Use case 
+
 1. Input type transform to other type[like User -> employee]
    
   ```java
@@ -829,4 +830,5 @@ Use case
     O process(I item) throws Exception;
   }
   ```
+
 2. Filter out records thats should not write 
