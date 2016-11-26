@@ -773,3 +773,27 @@ public class DomainRowMapper implements RowMapper<Domain> {
 
 }
 ```
+
+### Job parameter ###
+
+instead of hardcode param value like file path into batch config file we can use `job parameter`
+
+update batch-jobs.xml with param
+```xml
+<bean id="multiResourceReader"
+    class=" org.springframework.batch.item.file.MultiResourceItemReader" scope="step">
+     <!--<property name="resources" value="file:inputs/domain-*.csv" />-->
+    <property name="resources" value="#{jobParameters['filePath']}" />
+    <property name="delegate" ref="flatFileItemReader" />
+  </bean>
+```
+
+update App.java
+
+```java
+JobParameters jobParameters = new JobParametersBuilder()
+    .addString("filePath", "file:inputs/domain-*.csv")
+    .toJobParameters(); 
+JobExecution execution = jobLauncher.run(job, jobParameters);
+
+```

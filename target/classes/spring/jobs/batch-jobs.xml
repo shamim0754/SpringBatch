@@ -33,12 +33,12 @@
 	</job>
 
 	<bean id="multiResourceReader"
-		class=" org.springframework.batch.item.file.MultiResourceItemReader">
-		<property name="resources" value="file:inputs/domain-*.csv" />
+		class=" org.springframework.batch.item.file.MultiResourceItemReader" scope="step">
+		<property name="resources" value="#{jobParameters['filePath']}" />
 		<property name="delegate" ref="flatFileItemReader" />
 	</bean>
 
-	<bean id="flatFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<bean id="flatFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader" >
 
 		<property name="lineMapper">
 			<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -52,11 +52,12 @@
 				</property>
 				<property name="fieldSetMapper">
 					<!-- Mapper which maps each individual items in a record to properties in POJO -->
-                    <bean class="com.javaaround.fieldmapper.DomainFieldSetMapper" />
+                   
 					<!-- <bean
 						class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
 						<property name="prototypeBeanName" value="domain" />
 					</bean> -->
+					 <bean class="com.javaaround.fieldmapper.DomainFieldSetMapper" />
 				</property>
 			</bean>
 		</property>
