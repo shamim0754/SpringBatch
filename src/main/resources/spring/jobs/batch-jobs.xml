@@ -1,11 +1,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:batch="http://www.springframework.org/schema/batch"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation=
 		"http://www.springframework.org/schema/batch
 		http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
 		http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
 	">
 	<import resource="../config/application-context.xml" />
 	<bean id="domain" class="com.javaaround.Domain" />
@@ -20,7 +22,7 @@
 		</step>
 		<step id="step1">
 			<tasklet>
-				<chunk reader="multiResourceReader" processor="domainItemProcessor" writer="xmlItemWriter"
+				<chunk reader="domainItemReader" processor="domainItemProcessor" writer="xmlItemWriter"
 					commit-interval="1" />
 			</tasklet>
 		</step>
@@ -31,6 +33,26 @@
 			</tasklet>
 		</step> -->
 	</job>
+	<bean id="dateFormat" class="java.text.SimpleDateFormat">
+        <constructor-arg value="yyyy-MM-dd" />
+    </bean>
+	<bean id="domainItemReader" class="com.javaaround.reader.DomainItemReader"  >
+        <property name="domainList" >
+            <list>
+                <bean class="com.javaaround.Domain">
+					<property name="id" value="1" />
+					<property name="domain" value="facebook.com" />
+				</bean>
+				<bean class="com.javaaround.Domain">
+					<property name="id" value="2" />
+					<property name="domain" value="yahoo.com" />
+				
+				</bean>
+				
+            </list>
+        </property>
+    </bean>
+
 	<!-- Optional ItemProcessor to perform business logic/filtering on the input records -->
     <bean id="domainItemProcessor" class="com.javaaround.processor.DomainItemProcessor" />
 	<bean id="multiResourceReader"

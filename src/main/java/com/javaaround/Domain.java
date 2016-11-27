@@ -12,6 +12,10 @@ public class Domain {
 	private String domain;
 	private LocalDate createdDate;
 
+    public Domain(){
+    	
+    }
+
 	@XmlElement
 	public int getId() {
 		return id;

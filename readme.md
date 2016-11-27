@@ -870,3 +870,78 @@ update batch-jobs.xml
 
 ### Run App ###
 `mvn clean package` <br/>
+
+### Custom Reader ###
+```java
+public interface ItemReader<T> {
+
+    T read() throws Exception, UnexpectedInputException, ParseException;
+
+}
+```
+
+calling `read` on each item returns one Item or null if no more items are left. An item might represent a line in a file, a row in a database, an element in an XML file,hardcoded etc.
+
+create DomainItemReader.java
+```java
+package com.javaaround.reader;
+
+import java.util.List;
+
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ParseException;
+import org.springframework.batch.item.UnexpectedInputException;
+import com.javaaround.Domain;
+/**
+ * @author Dinesh Rajput
+ *
+ */
+public class DomainItemReader implements ItemReader<Domain>{
+ 
+ private List<Domain> domainList;
+ private int domainCount = 0;
+ @Override
+ public Domain read() throws Exception, UnexpectedInputException,
+   ParseException {
+  
+  if(domainCount < domainList.size())
+    return domainList.get(domainCount++);
+  else
+    return null;
+  
+ }
+ public List<Domain> getDomainList() {
+  return domainList;
+ }
+ public void setDomainList(List<Domain> domainList) {
+  this.domainList = domainList;
+ }
+ 
+}
+```
+
+update batch-jobs.xml
+
+```xml
+<chunk reader="domainItemReader" processor="domainItemProcessor" writer="xmlItemWriter"
+          commit-interval="1" />
+<bean id="domainItemReader" class="com.javaaround.reader.DomainItemReader"  >
+    <property name="domainList" >
+        <list>
+            <bean class="com.javaaround.Domain">
+      <property name="id" value="1" />
+      <property name="domain" value="facebook.com" />
+    </bean>
+    <bean class="com.javaaround.Domain">
+      <property name="id" value="2" />
+      <property name="domain" value="yahoo.com" />
+    
+    </bean>
+    
+        </list>
+    </property>
+</bean>          
+```
+
+### Run App ###
+`mvn clean package` <br/>

@@ -1,1 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?><domains><domain><create>2016-03-12</create><name>facebook.com</name><id>1</id></domain><domain><create>2016-03-13</create><name>yahoo.com</name><id>2</id></domain><domain><create>2016-03-14</create><name>google.com</name><id>3</id></domain></domains>
+<?xml version="1.0" encoding="UTF-8"?><domains><domain><name>facebook.com</name><id>1</id></domain><domain><name>yahoo.com</name><id>2</id></domain></domains>
