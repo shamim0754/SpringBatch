@@ -7,7 +7,7 @@ import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
 import com.javaaround.Domain;
 /**
- * @author Dinesh Rajput
+ * @author Md.Shamim MIah
  *
  */
 public class DomainItemReader implements ItemReader<Domain>{
