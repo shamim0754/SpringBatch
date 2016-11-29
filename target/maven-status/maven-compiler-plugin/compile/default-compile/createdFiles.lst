@@ -7,3 +7,4 @@ com\javaaround\fieldmapper\DomainFieldSetMapper.class
 com\javaaround\writer\DomainItemWriter.class
 com\javaaround\xmladapter\LocalDateAdapter.class
 com\javaaround\Domain.class
+com\javaaround\listener\DomainJobListener.class

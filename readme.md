@@ -1015,3 +1015,62 @@ update batch-jobs.xml
     void afterJob(TobExecution jobExecution);
   }
   ```
+
+create DomainJobListener.java
+
+```java
+package com.javaaround.listener;
+import java.util.List;
+ 
+import org.joda.time.DateTime;
+import org.springframework.batch.core.BatchStatus;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobExecutionListener;
+ 
+public class DomainJobListener implements JobExecutionListener{
+ 
+    private DateTime startTime, stopTime;
+ 
+    @Override
+    public void beforeJob(JobExecution jobExecution) {
+        startTime = new DateTime();
+        System.out.println("Domain Job starts at :"+startTime);
+    }
+ 
+    @Override
+    public void afterJob(JobExecution jobExecution) {
+        stopTime = new DateTime();
+        System.out.println("Domain Job stops at :"+stopTime);
+        System.out.println("Total time take in millis :"+getTimeInMillis(startTime , stopTime));
+ 
+        if(jobExecution.getStatus() == BatchStatus.COMPLETED){
+            System.out.println("Domain job completed successfully");
+            //Here you can perform some other business logic like cleanup
+        }else if(jobExecution.getStatus() == BatchStatus.FAILED){
+            System.out.println("Domain job failed with following exceptions ");
+            List<Throwable> exceptionList = jobExecution.getAllFailureExceptions();
+            for(Throwable th : exceptionList){
+                System.err.println("exception :" +th.getLocalizedMessage());
+            }
+        }
+    }
+ 
+    private long getTimeInMillis(DateTime start, DateTime stop){
+        return stop.getMillis() - start.getMillis();
+    }
+}
+```
+
+update batch-jobs.xml
+
+```xml
+<job>
+<listeners>
+    <listener ref="domainJobListener" />
+</listeners>
+</job>
+<bean id="domainJobListener" class="com.javaaround.listener.DomainJobListener" />
+```
+
+### Run App ###
+`mvn clean package` <br/>

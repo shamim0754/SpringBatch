@@ -32,7 +32,13 @@
 					commit-interval="1" />
 			</tasklet>
 		</step> -->
+		<listeners>
+            <listener ref="domainJobListener" />
+        </listeners>
 	</job>
+	<!-- Optional JobExecutionListener to perform business logic before and after the job -->
+    <bean id="domainJobListener" class="com.javaaround.listener.DomainJobListener" />
+
 	<bean id="domainItemWriter" class="com.javaaround.writer.DomainItemWriter">
     	<property name="delegate" ref="flatFileItemWriter" />
 	</bean>
