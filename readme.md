@@ -950,12 +950,14 @@ update batch-jobs.xml
  listeners help to listen into the Job or Step execution and intercept it.there are following listeners.
 
 1. StepExecutionListener
+
   ```java
-    public interface StepExecutionListener{
+    public interface StepExecutionListener extends StepListener {
+      void beforeStep(StepExecution stepExecution);
       ExitStatus afterStep(StepExecution stepExecution);
-      void beforeStep(StepExecution stepExecution)
     }
   ```
+  
 2. ItemReadListener
 3. ItemProcessListener
 4. ItemWriteListener
