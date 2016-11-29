@@ -11,7 +11,7 @@
 	">
 	<import resource="../config/application-context.xml" />
 	<bean id="domain" class="com.javaaround.Domain" />
-
+	
 	<bean id="fileDeletingTasklet" class="com.javaaround.tasklet.FileDeletingTasklet" >
 		<property name="directory" value="file:outputs/" />
 	</bean>
@@ -22,7 +22,7 @@
 		</step>
 		<step id="step1">
 			<tasklet>
-				<chunk reader="domainItemReader" processor="domainItemProcessor" writer="flatFileItemWriter"
+				<chunk reader="domainItemReader" processor="domainItemProcessor" writer="hibernateItemWriter"
 					commit-interval="1" />
 			</tasklet>
 		</step>
@@ -92,7 +92,10 @@
 		</property>
 
 	</bean>
-
+<!-- ItemWriter which writes data to database -->
+    <bean id="hibernateItemWriter" class="org.springframework.batch.item.database.HibernateItemWriter">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
 	 <bean id="flatFileItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter">
 
 		<property name="resource" value="file:inputs/domain.all.csv" />

@@ -658,6 +658,76 @@ add database writer at batch-jobs.xml
 `mvn clean package` <br/>
 ![Image of spring batch](images/2.png)
 
+### HibernateItemWriter ###
+
+add dependencty at pom.xml
+```xml
+ <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>4.3.6.Final</version>
+  </dependency>
+  <!-- To map JodaTime with database type -->      
+  <dependency>
+      <groupId>org.jadira.usertype</groupId>
+      <artifactId>usertype.core</artifactId>
+      <version>3.0.0.CR1</version>
+  </dependency>
+  <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+      <version>${springframework.version}</version>
+  </dependency>
+```
+
+add hibernateItemwriter at batch-jobs.xml
+```xml
+<beans   xmlns:tx="http://www.springframework.org/schema/tx"
+  xsi:schemaLocation=
+    "http://www.springframework.org/schema/tx
+                   http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+ <bean id="hibernateItemWriter" class="org.springframework.batch.item.database.HibernateItemWriter">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+ <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" >
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan">
+            <list>
+                <value>com.javaaround</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+               <prop key="hibernate.show_sql">true</prop> 
+               <prop key="hibernate.format_sql">true</prop> -->
+            </props>
+        </property>       
+    </bean>
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager" />
+  <tx:annotation-driven transaction-manager="transactionManager"/> 
+```
+
+update Domain.java
+```java
+@XmlRootElement
+@Entity
+@Table(name = "domains")
+public class Domain {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
+  private String domain;
+  @Column(name = "created_date", nullable = false)
+  //@Type  map between 
+  //jodatime LocalDate and database specific Date.
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+  private LocalDate createdDate;
+
+
+}
+```
+
 ### Write Into XML ###
 
 add dependency at pom.xml

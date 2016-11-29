@@ -4,12 +4,31 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.joda.time.LocalDate;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+ 
+import org.hibernate.annotations.Type;
+import org.joda.time.LocalDate;
+ 
+ 
+
 
 @XmlRootElement
+@Entity
+@Table(name = "domains")
 public class Domain {
-
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String domain;
+	@Column(name = "created_date", nullable = false)
+	//@Type  map between 
+	//jodatime LocalDate and database specific Date.
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	private LocalDate createdDate;
 
     public Domain(){
