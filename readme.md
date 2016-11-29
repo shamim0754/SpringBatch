@@ -945,3 +945,20 @@ update batch-jobs.xml
 
 ### Run App ###
 `mvn clean package` <br/>
+
+### Spring Listeners ###
+ listeners help to listen into the Job or Step execution and intercept it.there are following listeners.
+
+1. StepExecutionListener
+  ```java
+    public interface StepExecutionListener{
+      ExitStatus afterStep(StepExecution stepExecution);
+      void beforeStep(StepExecution stepExecution)
+    }
+  ```
+2. ItemReadListener
+3. ItemProcessListener
+4. ItemWriteListener
+5. ChunkListener
+6. SkipListener
+7.JobExecutionListener

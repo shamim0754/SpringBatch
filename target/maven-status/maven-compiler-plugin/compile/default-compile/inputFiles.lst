@@ -2,6 +2,7 @@ F:\New folder\java\SpringBatch\src\main\java\com\javaaround\processor\DomainItem
 F:\New folder\java\SpringBatch\src\main\java\com\javaaround\fieldmapper\DomainFieldSetMapper.java
 F:\New folder\java\SpringBatch\src\main\java\com\javaaround\reader\DomainItemReader.java
 F:\New folder\java\SpringBatch\src\main\java\com\javaaround\rowmapper\DomainRowMapper.java
+F:\New folder\java\SpringBatch\src\main\java\com\javaaround\writer\DomainItemWriter.java
 F:\New folder\java\SpringBatch\src\main\java\com\javaaround\xmladapter\LocalDateAdapter.java
 F:\New folder\java\SpringBatch\src\main\java\com\javaaround\tasklet\FileDeletingTasklet.java
 F:\New folder\java\SpringBatch\src\main\java\com\javaaround\App.java

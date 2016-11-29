@@ -22,7 +22,7 @@
 		</step>
 		<step id="step1">
 			<tasklet>
-				<chunk reader="domainItemReader" processor="domainItemProcessor" writer="xmlItemWriter"
+				<chunk reader="domainItemReader" processor="domainItemProcessor" writer="flatFileItemWriter"
 					commit-interval="1" />
 			</tasklet>
 		</step>
@@ -33,27 +33,26 @@
 			</tasklet>
 		</step> -->
 	</job>
-	<bean id="dateFormat" class="java.text.SimpleDateFormat">
-        <constructor-arg value="yyyy-MM-dd" />
-    </bean>
+	<bean id="domainItemWriter" class="com.javaaround.writer.DomainItemWriter">
+    	<property name="delegate" ref="flatFileItemWriter" />
+	</bean>
 	<bean id="domainItemReader" class="com.javaaround.reader.DomainItemReader"  >
         <property name="domainList" >
             <list>
-
-                <bean id="domain1" class="com.javaaround.Domain">
-		<property name="id" value="1" />
-		<property name="domain" value="facebook.com" />
-	</bean>
-	<bean id="domain2" class="com.javaaround.Domain">
-		<property name="id" value="2" />
-		<property name="domain" value="yahoo.com" />
-	
-	</bean>
+                <bean class="com.javaaround.Domain">
+					<property name="id" value="1" />
+					<property name="domain" value="facebook.com" />
+				</bean>
+				<bean class="com.javaaround.Domain">
+					<property name="id" value="2" />
+					<property name="domain" value="yahoo.com" />
+				
+				</bean>
 				
             </list>
         </property>
     </bean>
-    
+
 	<!-- Optional ItemProcessor to perform business logic/filtering on the input records -->
     <bean id="domainItemProcessor" class="com.javaaround.processor.DomainItemProcessor" />
 	<bean id="multiResourceReader"
@@ -102,9 +101,10 @@
 						<property name="names" value="id, domain" />
 					</bean>
 				</property>
+				
 			</bean>
 		</property>
-
+		<property name="footerCallback" ref="domainItemWriter" />
 	</bean>
 	<bean id="mysqlItemWriter"
 	class="org.springframework.batch.item.database.JdbcBatchItemWriter">

@@ -4,5 +4,6 @@ com\javaaround\processor\DomainItemProcessor.class
 com\javaaround\rowmapper\DomainRowMapper.class
 com\javaaround\reader\DomainItemReader.class
 com\javaaround\fieldmapper\DomainFieldSetMapper.class
+com\javaaround\writer\DomainItemWriter.class
 com\javaaround\xmladapter\LocalDateAdapter.class
 com\javaaround\Domain.class
